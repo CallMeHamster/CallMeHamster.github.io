@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* Styles CSS */
+        .cookie{
+            display: grid;
+            grid-template-columns: 75% 1fr;
+            gap: 20px;
+            position: fixed;
+            bottom: 5px;
+            left: 50%;
+            width: 720px;
+            max-width: 90%;
+            transform: translate(-50%, calc(100% + 5px));
+            will-change: transform;
+            padding: 24px;
+            background: #F5F5F5;
+            border-radius: 3px;
+            transition: 0.5s;
+        }
+
+        .cookie--active {
+            display: grid;
+            transform: translate(-50%, 0);
+        }
+
+        .cookie p{
+            margin: 0;
+            width: 100%;
+            font-size: 14px;
+            color: black;
+        }
+
+        .cookie-btn {
+            align-self: start;
+            width: 100px;
+            height: 30px;
+            margin-left: auto;
+            outline: unset;
+            border: 0;
+            color: white;
+            background: rgb(140,198,63);
+            border-radius: 3px;
+            transition: 0.1s; 
+        }
+
+        .cookie-btn:hover {
+            cursor: pointer;
+            background-color: rgb(37,105,39)
+        }
+
+        @media (max-width: 767px) {
+            .cookie--active {
+                display: flex;
+                width: 100%;
+                padding: 16px;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .cookie-btn {
+                align-self: center;
+                margin-left: 0;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- HTML -->
+    <div class="cookie">
+        <p>Для улучшения работы сайта и его взаимодействия с пользователями мы используем файлы cookie. Продолжая работу с сайтом, Вы разрешаете использование cookie-файлов. Вы всегда можете отключить файлы cookie в настройках Вашего браузера.</p>
+        <button class="cookie-btn">Принять</button>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        function write(name, value, days = 1) {
+            const now = new Date();
+            const nowTime = now.getTime();
+            const expireTime = nowTime + days * 3600 * 1000 * 24;
+            now.setTime(expireTime);
+            const newDate = `${name}=${value};expires=${now.toGMTString()};path=/`;
+            document.cookie = newDate;
+            console.log(newDate)
+        }
+
+        function remove(name) {
+            const now = new Date();
+            const nowTime = now.getTime();
+            const expireTime = nowTime - 1;
+            now.setTime(expireTime);
+            document.cookie = `${name}=;expires=${now.toGMTString()}path=/'`;
+        }
+
+        function get(name) {
+            const newName = name.replace(/([.$?*|{}()[\]\\/+^])/gu);
+            const matches = document.cookie.match(new RegExp(`(?:^|; )${newName}=([^;]*)`, 'g'));
+            return matches ? decodeURIComponent(matches[1]) : undefined;
+        }
+
+        function checkCookies() {
+            let cookieNote = document.querySelector('.cookie');
+            let cookieBtn = cookieNote.querySelector('.cookie-btn');
+            const btnAddListener = () => {
+                write('cookies_policy', 'true');
+                cookieNote.classList.remove('cookie--active');
+                cookieBtn.removeEventListener('click', btnAddListener)
+            }
+
+            if (!get('cookies_policy')) {
+                cookieNote.classList.add('cookie--active');
+                cookieBtn.addEventListener('click', btnAddListener)
+            }
+        }
+
+        checkCookies();
+    </script>
+</body>
+</html>
