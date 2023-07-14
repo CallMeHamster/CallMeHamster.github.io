@@ -87,7 +87,6 @@
             now.setTime(expireTime);
             const newDate = `${name}=${value};expires=${now.toGMTString()};path=/`;
             document.cookie = newDate;
-            console.log(newDate)
         }
 
         function remove(name) {
@@ -108,7 +107,7 @@
             let cookieNote = document.querySelector('.cookie');
             let cookieBtn = cookieNote.querySelector('.cookie-btn');
             const btnAddListener = () => {
-                write('cookies_policy', 'true');
+                write('cookies_policy', 'true', 365);
                 cookieNote.classList.remove('cookie--active');
                 cookieBtn.removeEventListener('click', btnAddListener)
             }
