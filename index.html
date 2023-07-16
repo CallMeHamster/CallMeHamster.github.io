@@ -106,15 +106,15 @@
         function checkCookies() {
             let cookieNote = document.querySelector('.cookie');
             let cookieBtn = cookieNote.querySelector('.cookie-btn');
-            const btnAddListener = () => {
+            const onClickBtnCookies = () => {
                 write('cookies_policy', 'true', 365);
                 cookieNote.classList.remove('cookie--active');
-                cookieBtn.removeEventListener('click', btnAddListener)
+                cookieBtn.removeEventListener('click', onClickBtnCookies)
             }
 
             if (!get('cookies_policy')) {
                 cookieNote.classList.add('cookie--active');
-                cookieBtn.addEventListener('click', btnAddListener)
+                cookieBtn.addEventListener('click', onClickBtnCookies)
             }
         }
 
